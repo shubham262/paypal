@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 import mongoose from "mongoose";
 
 const database = process.env.DATABASE;
-const MONGO_URI = "mongodb://127.0.0.1:27017/razorpay";
+const MONGO_URI = "mongodb://127.0.0.1:27017/paypal";
 
 let cachedConnection = null;
 export const handleMongoDBConnection = async () => {
