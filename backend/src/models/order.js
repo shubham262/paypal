@@ -76,15 +76,12 @@ const orderSchema = new mongoose.Schema(
 			index: true,
 		},
 
-		razorpayOrderId: {
+		paypalOrderId: {
 			type: String,
 			unique: true,
 			sparse: true,
 		},
-		razorpayPaymentId: {
-			type: String,
-		},
-		razorpaySignature: {
+		paypalOrderStatus: {
 			type: String,
 		},
 		paidAt: {
