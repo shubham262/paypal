@@ -29,47 +29,46 @@ export const seedProducts = [
 ];
 export const seedPlans = [
 	{
-		name: "PW BASIC",
-		description: "Fundamental access to the curriculum.",
-		features: ["Standard Course Access", "Community Support"],
+		name: "PW Basic",
+		description: "Access to standard FullStackLife courses.",
+		paypalProductId: "PROD-8NS71971JN581603N",
+		features: ["HTML Basics", "CSS Advanced", "JS Deep Dive"],
 		active: true,
 		pricingOptions: [
 			{
 				interval: "month",
-				price: 1500,
-				currency: "inr",
-				razorpayPlanId: "plan_T2cICwfpFGusSk", // Extracted from your screenshot
+				price: 9.99,
+				currency: "usd",
+				paypalPlanId: "P-5JU19657P2462721ANI7AFSQ",
 			},
 			{
 				interval: "year",
-				price: 12000,
-				currency: "inr",
-				razorpayPlanId: "plan_T2cIXmzN1Pm8Wf", // Extracted from your screenshot
+				price: 99.99,
+				currency: "usd",
+				paypalPlanId: "P-9W17228409774842VNI7AFYI",
 			},
 		],
 	},
+
 	{
 		name: "PW PRO",
-		description: "Advanced access with premium mentorship.",
-		features: [
-			"Standard Course Access",
-			"Community Support",
-			"1-on-1 Mentorship",
-			"System Design Mock Interviews",
-		],
+		description:
+			"Full access including mentorship and advanced backend concepts.",
+		paypalProductId: "PROD-0MD16968A56320906",
+		features: ["Everything in Basic", "Node.js Mastery", "1-on-1 Mentorship"],
 		active: true,
 		pricingOptions: [
 			{
 				interval: "month",
-				price: 2500,
-				currency: "inr",
-				razorpayPlanId: "plan_T2cGkapNxr4WsK", // Extracted from your screenshot
+				price: 19.99,
+				currency: "usd",
+				paypalPlanId: "P-59G7701706133130MNI7AEVQ",
 			},
 			{
 				interval: "year",
-				price: 24000,
-				currency: "inr",
-				razorpayPlanId: "plan_T2cHeDgSrlKXaj", // Extracted from your screenshot
+				price: 199.99,
+				currency: "usd",
+				paypalPlanId: "P-9VH484728W8809701NI7AE7A",
 			},
 		],
 	},

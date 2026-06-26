@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from "react";
 import { Result, Button } from "antd";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { fetchStripePayementStatus } from "@/service/razorpayService";
 
 const CheckoutSuccess = () => {
 	const router = useRouter();
@@ -26,13 +25,6 @@ const CheckoutSuccess = () => {
 
 	const fetchStatus = async () => {
 		try {
-			const respose = await fetchStripePayementStatus(stripeId);
-
-			if (respose?.order?.[0]?.status === "paid") {
-				clearInterval(intervalRef.current);
-				intervalRef.current = null;
-				router.push("/dashboard");
-			}
 		} catch (error) {}
 	};
 

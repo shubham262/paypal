@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/immutability */
 "use client";
 import PaymentVerifyModal from "@/components/dashboard/PaymentsVerifyModal";
-import { checkout, fetchProducts, verify } from "@/service/razorpayService";
+import { checkout, fetchProducts, verify } from "@/service/paypalService";
 import { message, Button, Card, Typography, List, Divider, Empty } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
@@ -63,65 +63,11 @@ const Ecommerce = () => {
 		}
 
 		try {
-			message.info("Redirecting to Razorpay Secure Checkout...");
+			message.info("Redirecting to Paypal Secure Checkout...");
 			const payload = {
 				items: [...info?.cart],
 			};
 			const response = await checkout(payload);
-
-			const { amount, razorpayOrderId, currency } = response || {};
-
-			const options = {
-				key: process.env.NEXT_PUBLIC_RAZORPAY_API_KEY,
-				amount,
-				currency,
-				name: "PW SKills",
-				description: "Test Transaction",
-				order_id: razorpayOrderId,
-
-				theme: {
-					color: "#F37254",
-				},
-
-				handler: async (response) => {
-					try {
-						setInfo((prev) => ({ ...prev, isOpen: true, status: "verifying" }));
-						const verifyResponse = await verify({ ...response });
-						const { success, message: msg } = verifyResponse || {};
-						if (success) {
-							message.success("Order Sucessfull");
-							setInfo((prev) => ({
-								...prev,
-								status: "success",
-							}));
-							setTimeout(() => {
-								setInfo((prev) => ({
-									...prev,
-									status: "verifying",
-									isOpen: false,
-								}));
-							}, 5000);
-						} else {
-							message.error(msg || "Something went wrong");
-							setInfo((prev) => ({
-								...prev,
-								status: "failed",
-							}));
-							setTimeout(() => {
-								setInfo((prev) => ({ ...prev, isOpen: false }));
-							}, 5000);
-						}
-					} catch (error) {
-						console.log("error==>verify", error);
-						setTimeout(() => {
-							setInfo((prev) => ({ ...prev, isOpen: false }));
-						}, 5000);
-					}
-				},
-			};
-
-			const rzp = new window.Razorpay(options);
-			rzp.open();
 
 			setInfo((prev) => ({ ...prev, loadingCheckout: true }));
 		} catch (error) {
