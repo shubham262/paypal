@@ -27,6 +27,17 @@ export const fetchOrderStatus = async (orderId) => {
 	}
 };
 
+export const fetchSubscriptionStatus = async (orderId) => {
+	try {
+		const { data } = await api.get(
+			`/api/ecommerce/subscription-status/${orderId}`
+		);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
 export const checkout = async (payload) => {
 	try {
 		const { data } = await api.post(`/api/ecommerce/create-checkout`, payload);

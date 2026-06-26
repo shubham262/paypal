@@ -268,6 +268,25 @@ export const paypalWebhookController = async (req, res) => {
 				captureController(event.resource.id);
 				break;
 
+			case "BILLING.SUBSCRIPTION.ACTIVATED": {
+				const subscriptionId = event.resource.id;
+				const paypalSubscriberId = event.resource?.subscriber?.payer_id;
+				const currentPeriodEnd = event?.billing_info?.next_billing_time;
+
+				const subscription = await Subscription.findOne({
+					paypalSubscriptionId: subscriptionId,
+				});
+				if (!subscription) {
+					console.log("No such subscription found");
+				}
+
+				subscription.paypalSubscriberId = paypalSubscriberId;
+				subscription.currentPeriodEnd = new Date(currentPeriodEnd);
+				subscription.status = "active";
+				await subscription.save();
+				console.log("Subscription marked success fully");
+			}
+
 			default:
 				console.log("Unhandled event", eventType);
 				break;
@@ -312,10 +331,37 @@ export const orderStatusController = async (req, res) => {
 	}
 };
 
+export const subscriptionStatusController = async (req, res) => {
+	try {
+		const { subscriptionId } = req.params || {};
+
+		if (!subscriptionId) {
+			return res.status(400).json({ message: "Order Id Is required" });
+		}
+
+		const subscription = await Subscription.findOne({
+			paypalSubscriptionId: subscriptionId,
+		});
+
+		if (!subscription) {
+			return res.status(400).json({ message: "Order does not exist" });
+		}
+		return res.status(200).json({ subscription });
+	} catch (error) {
+		console.error("[subscriptionStatusController] Critical Error:", error);
+
+		return res.status(500).json({
+			success: false,
+			error: "Failed to capture webhook events",
+			details: error.message,
+		});
+	}
+};
+
 export const subscriptionController = async (req, res) => {
 	try {
 		const { planId, interval } = req.body || {};
-
+		const userId = req.user?.id;
 		if (!planId || !interval) {
 			return res
 				.status(400)
@@ -345,7 +391,7 @@ export const subscriptionController = async (req, res) => {
 				plan_id: payPalPlanId,
 				application_context: {
 					user_action: "SUBSCRIBE_NOW",
-					return_url: "http://localhost:3000/dashboard/subscription/success",
+					return_url: "http://localhost:3000/dashboard/subscriptions/success",
 					cancel_url: "http://localhost:3000/dashboard/subscriptions",
 				},
 			},
@@ -357,7 +403,25 @@ export const subscriptionController = async (req, res) => {
 			}
 		);
 
-		console.log("subscriptionResponse", subscriptionResponse?.data);
+		const subscriptionId = subscriptionResponse?.data?.id;
+		const subscription = await Subscription.create({
+			userId,
+			planId,
+
+			paypalPlanId: payPalPlanId,
+			paypalSubscriptionId: subscriptionId,
+
+			status: "APPROVAL_PENDING",
+		});
+
+		const { links } = subscriptionResponse?.data || {};
+
+		const url = links.filter((ele) => ele?.rel === "approve")?.[0]?.href;
+		return res.status(201).json({
+			message: "Subscription created",
+			url,
+			subscription,
+		});
 	} catch (error) {
 		console.error("[subscriptionController] Critical Error:", error);
 

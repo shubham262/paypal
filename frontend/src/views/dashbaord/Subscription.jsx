@@ -47,7 +47,8 @@ const Subscription = () => {
 			};
 
 			const response = await subscribe(payload);
-			console.log("response", response);
+			const { url } = response || {};
+			window.location.href = url;
 
 			message.success(
 				`Redirecting to Paypal for ${plan.name} (${billingInterval}ly)...`
