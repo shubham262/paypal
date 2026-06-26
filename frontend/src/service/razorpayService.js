@@ -37,6 +37,17 @@ export const checkout = async (payload) => {
 		throw error;
 	}
 };
+export const checkoutCapture = async (payload) => {
+	try {
+		const { data } = await api.post(
+			`/api/ecommerce/create-checkout-capture`,
+			payload
+		);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
 
 export const subscribe = async (payload) => {
 	try {

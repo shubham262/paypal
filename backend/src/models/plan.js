@@ -4,6 +4,10 @@ const planSchema = new mongoose.Schema(
 	{
 		name: { type: String, required: true, trim: true },
 		description: { type: String, required: true },
+
+		// 🆕 ADDED: The parent PayPal Product ID (e.g., PROD-12345)
+		paypalProductId: { type: String, required: true, unique: true },
+
 		features: [{ type: String }],
 		active: { type: Boolean, default: true },
 
@@ -18,9 +22,10 @@ const planSchema = new mongoose.Schema(
 					type: Number,
 					required: true,
 				},
-				currency: { type: String, default: "inr" },
+				currency: { type: String, default: "usd" }, // 🔄 Changed default to USD
 
-				razorpayPlanId: {
+				// 🔄 REPLACED: Swapped Razorpay for PayPal
+				paypalPlanId: {
 					type: String,
 					required: true,
 				},

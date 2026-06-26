@@ -47,62 +47,16 @@ const Subscription = () => {
 			};
 
 			const response = await subscribe(payload);
-			console.log("response", response);
-			const { description, name, razorpaySubscriptionId } = response || {};
+			const { url } = response || {};
 
-			const options = {
-				key: process.env.NEXT_PUBLIC_RAZORPAY_API_KEY,
-
-				name,
-				description,
-				subscription_id: razorpaySubscriptionId,
-
-				theme: {
-					color: "#F37254",
-				},
-
-				handler: async (response) => {
-					try {
-						setInfo((prev) => ({ ...prev, isOpen: true, status: "verifying" }));
-						const verifyResponse = await verifySubscription({ ...response });
-						const { success, message: msg } = verifyResponse || {};
-						if (success) {
-							message.success("Order Sucessfull");
-							setInfo((prev) => ({
-								...prev,
-								status: "success",
-							}));
-							setTimeout(() => {
-								setInfo((prev) => ({
-									...prev,
-									status: "verifying",
-									isOpen: false,
-								}));
-							}, 5000);
-						} else {
-							message.error(msg || "Something went wrong");
-							setInfo((prev) => ({
-								...prev,
-								status: "failed",
-							}));
-							setTimeout(() => {
-								setInfo((prev) => ({ ...prev, isOpen: false }));
-							}, 5000);
-						}
-					} catch (error) {
-						console.log("error==>verify", error);
-						setTimeout(() => {
-							setInfo((prev) => ({ ...prev, isOpen: false }));
-						}, 5000);
-					}
-				},
-			};
-
-			const rzp = new window.Razorpay(options);
-			rzp.open();
+			if (url) {
+				window.location.href = url;
+			} else {
+				throw new Error("No redirect URL found in response.");
+			}
 
 			message.success(
-				`Redirecting to Razorpay for ${plan.name} (${billingInterval}ly)...`
+				`Redirecting to Paypal for ${plan.name} (${billingInterval}ly)...`
 			);
 		} catch (error) {
 			console.error("Subscription failed:", error);

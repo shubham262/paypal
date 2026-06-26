@@ -3,30 +3,31 @@
 import React, { useEffect, useRef } from "react";
 import { Result, Button } from "antd";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { fetchStripePayementStatus } from "@/service/razorpayService";
+import { checkoutCapture } from "@/service/razorpayService";
 
 const CheckoutSuccess = () => {
 	const router = useRouter();
 
 	const intervalRef = useRef(null);
 	const params = useSearchParams();
-	const stripeId = params.get("sessionId");
+	const token = params.get("token");
 
 	useEffect(() => {
-		const intervalId = setInterval(() => {
-			fetchStatus();
-		}, 3000);
-		intervalRef.current = intervalId;
+		fetchStatus();
+		// const intervalId = setInterval(() => {
+		// 	fetchStatus();
+		// }, 3000);
+		// intervalRef.current = intervalId;
 
-		() => {
-			clearInterval(intervalRef.current);
-			intervalRef.current = null;
-		};
+		// () => {
+		// 	clearInterval(intervalRef.current);
+		// 	intervalRef.current = null;
+		// };
 	}, []);
 
 	const fetchStatus = async () => {
 		try {
-			const respose = await fetchStripePayementStatus(stripeId);
+			const respose = await checkoutCapture({ orderId: token });
 
 			if (respose?.order?.[0]?.status === "paid") {
 				clearInterval(intervalRef.current);

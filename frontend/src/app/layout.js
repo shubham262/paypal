@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AntdProvider from "@/layouts/AntdProvider";
-import Script from "next/script";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -24,7 +23,6 @@ export default function RootLayout({ children }) {
 			lang="en"
 			className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
 		>
-			<Script src="https://checkout.razorpay.com/v1/checkout.js" />
 			<AntdProvider>
 				<body className="min-h-full flex flex-col">{children}</body>
 			</AntdProvider>
