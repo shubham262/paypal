@@ -4,7 +4,7 @@ export const seedProducts = [
 		slug: "system-design-course",
 		description:
 			"Learn scalable architecture, tradeoffs, and interview-ready design patterns.",
-		price: 990000,
+		price: 990000,//
 		currency: "inr",
 		active: true,
 	},
@@ -31,21 +31,21 @@ export const seedPlans = [
 	{
 		name: "PW Basic",
 		description: "Access to standard FullStackLife courses.",
-		paypalProductId: "PROD-8NS71971JN581603N",
+		paypalProductId: "PROD-9DY28891EP551234T",
 		features: ["HTML Basics", "CSS Advanced", "JS Deep Dive"],
 		active: true,
 		pricingOptions: [
 			{
 				interval: "month",
-				price: 9.99,
+				price: 10,
 				currency: "usd",
-				paypalPlanId: "P-5JU19657P2462721ANI7AFSQ",
+				paypalPlanId: "P-7MY926400N5310524NI7FY5Y",
 			},
 			{
 				interval: "year",
-				price: 99.99,
+				price: 100,
 				currency: "usd",
-				paypalPlanId: "P-9W17228409774842VNI7AFYI",
+				paypalPlanId: "P-2D988681SG495063RNI7FZ5I",
 			},
 		],
 	},
@@ -54,21 +54,21 @@ export const seedPlans = [
 		name: "PW PRO",
 		description:
 			"Full access including mentorship and advanced backend concepts.",
-		paypalProductId: "PROD-0MD16968A56320906",
+		paypalProductId: "PROD-46W60150X8643612F",
 		features: ["Everything in Basic", "Node.js Mastery", "1-on-1 Mentorship"],
 		active: true,
 		pricingOptions: [
 			{
 				interval: "month",
-				price: 19.99,
+				price: 20,
 				currency: "usd",
-				paypalPlanId: "P-59G7701706133130MNI7AEVQ",
+				paypalPlanId: "P-6PX18183DL049720RNI7F2FY",
 			},
 			{
 				interval: "year",
-				price: 199.99,
+				price: 220,
 				currency: "usd",
-				paypalPlanId: "P-9VH484728W8809701NI7AE7A",
+				paypalPlanId: "P-7YL73893N95139029NI7F2LY",
 			},
 		],
 	},

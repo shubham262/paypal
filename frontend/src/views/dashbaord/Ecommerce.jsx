@@ -68,6 +68,8 @@ const Ecommerce = () => {
 				items: [...info?.cart],
 			};
 			const response = await checkout(payload);
+			const { url } = response || {};
+			window.location.href = url;
 
 			setInfo((prev) => ({ ...prev, loadingCheckout: true }));
 		} catch (error) {
